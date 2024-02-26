@@ -1,15 +1,15 @@
-function EEG = extractEEG_biosemi(SessionDir, Sess_trialType,trial_type)
+function extractEEG_biosemi(SessionDir, Sess_trialType,trial_type)
 % stitch EEG of specifified trial_types, convert to EEGLAB .set file,
 % and save to file directory
 % Input, SessionDir icnluding file directories
 %        Sess_trialType, the trial types for each trial in the session
 %       trial_type, the specific trial type to extract EEG, 'reach',
 %       'baseline', or 'all' which stiches all trials including SACCO ones
-% Output: EEG, EEGLAB .set structure with trials of the specific types
+% Output: EEGLAB .set structure with trials of the specific types
 % stitched together
 % Ran Xiao, Emory University, 2/2024
 
-if trial_type == 'all'
+if strcmp(trial_type, 'all')
     trial_idx = 1:length(SessionDir);
 else
     trial_idx = find(strcmpi(Sess_trialType,trial_type));
