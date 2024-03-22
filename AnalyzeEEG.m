@@ -18,6 +18,7 @@ MyFolderInfo = dir(strcat(DataDir,'*.set'));
 if strcmp(app.GenerateReportSwitch.Value, 'Yes')
     if exist(strcat(ResultDir,'Analysis_Report.mat'))
         Report_tb = load(strcat(ResultDir,'Analysis_Report.mat'));
+        Report_tb = Report_tb.Report_tb;
     else
         Report_tb = table('Size',[0 19],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Bad Segment Boundaries','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
             'VariableTypes',{'string','double','string','double','double','string','double','double','double','string','string','string','string','string','string','double','double','double','double'});
@@ -60,7 +61,7 @@ else
         if strcmp(app.GenerateReportSwitch.Value, 'Yes')
             Report_tb.("File Name"){i_file} =  FileName(1:end-4);
             Report_tb.("NoChannel")(i_file) =  (EEG.nbchan);
-            Report_tb.("Filter_Lo_Hi_Notch_SampRate"){i_file} = strcat(num2str(app.LowcutofffreqHzEditField.Value),', ', num2str(app.HighcutofffreqHzEditField.Value), ', ', app.NotchHzDropDown.Value, ', ', num2str(app.ResampingHzEditField.Value));
+            Report_tb.("Filter_Lo_Hi_Notch_SampRate"){i_file} = strcat(num2str(app.LowcutofffreqHzEditField.Value),', ', num2str(app.HighcutofffreqHzEditField.Value), ', ', num2str(app.NotchHzDropDown.Value), ', ', num2str(app.ResampingHzEditField.Value));
             Report_tb.("Original Duration")(i_file) = (EEG.xmax);
         end
 
@@ -340,8 +341,8 @@ else
                 Power(i_ch,:) = pxx;
                 RelPower(i_ch,:)=pxx/sum(pxx(1:find(f==30)));
             end
-            save(strcat(ResultDir,FileName,'_Step4_Pw'), 'Power');
-            save(strcat(ResultDir,FileName,'_Step4_RelPw'),'RelPower');
+            save(strcat(ResultDir,FileName,'_Step4_Pw.mat'), 'Power','f');
+            save(strcat(ResultDir,FileName,'_Step4_RelPw.mat'),'RelPower','f');
 
             figure;
             h=plot(f,RelPower');

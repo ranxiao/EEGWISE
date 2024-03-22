@@ -1,4 +1,4 @@
-% Prepare data by converting into .set format from EEGLab as the input
+   % Prepare data by converting into .set format from EEGLab as the input
 % format for the toolbox
 % Ran Xiao, Emory University, 2/12/2023
 % revise for trial stitching across different trial conditions 2/8/2024
@@ -31,13 +31,13 @@ else
     Sess_trialType = Sess_trialInfo.TrialType(ismember(Sess_trialInfo.Activity,Sess_trialIdx));
 
     trial_type = 'baseline';
-    EEG_baseline = extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
 
     trial_type = 'reach';
-    EEG_reach = extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
 
     trial_type = 'all';
-    EEG_all = extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
 end
 
 close all;
