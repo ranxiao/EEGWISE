@@ -1,0 +1,690 @@
+File Name,NoChannel,Filter_Lo_Hi_Notch_SampRate,Original Duration,ASR thres,Bad Segment Boundaries,Remaining Duration,Perc_rej_dur,Kurtosis thres,Bad Channels,Perc_rej_ch,CAR,ICA Algorithm,ICA Parameters,ICA Labeling,Artifact IC,Prob_artficat,Prob_thres,IC Rejection Ratio,mean Brain IC prob,Residual Variance
+TD08_Mon1_all,32,"0.2,100,60,250",529.408,53,"[
+  {
+    ""type"": ""boundary"",
+    ""latency"": 33907.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 34834.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 34835.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 34960.5,
+    ""duration"": 119
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 36755.5,
+    ""duration"": 119
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 37314.5,
+    ""duration"": 801
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 39168.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 39661.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 40096.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 41763.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 42012.5,
+    ""duration"": 1480
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 42385.5,
+    ""duration"": 367
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 42386.5,
+    ""duration"": 1049
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 42945.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 43500.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 43563.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 43564.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 44181.5,
+    ""duration"": 1360
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 45414.5,
+    ""duration"": 371
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 46589.5,
+    ""duration"": 243
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 47024.5,
+    ""duration"": 2038
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 48505.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 48506.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 49805.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 50174.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 50792.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 51413.5,
+    ""duration"": 181
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 51662.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 51787.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 53144.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 53207.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 54937.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 55124.5,
+    ""duration"": 429
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 55311.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 55560.5,
+    ""duration"": 305
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 58835.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 59208.5,
+    ""duration"": 182
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 59643.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 60632.5,
+    ""duration"": 243
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 61501.5,
+    ""duration"": 367
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 61564.5,
+    ""duration"": 677
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 61627.5,
+    ""duration"": 495
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 68484.5,
+    ""duration"": 433
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 72375.5,
+    ""duration"": 181
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 73923.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 74416.5,
+    ""duration"": 557
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 83803.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 86334.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 87447.5,
+    ""duration"": 2162
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 87448.5,
+    ""duration"": 243
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 87883.5,
+    ""duration"": 433
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 87884.5,
+    ""duration"": 305
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 88687.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 89924.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 93382.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 93569.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 93694.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 95792.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 98389.5,
+    ""duration"": 1417
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 103889.5,
+    ""duration"": 243
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 106611.5,
+    ""duration"": 123
+  }
+]",438.784684714362,0.171178590587293,5,12  15,0.0625,Yes,AMICA,"{""lrate"":0.1,""maxiter"":2000,""num_models"":1,""num_mix_comps"":3,""numprocs"":8,""max_threads"":4}",iMARA,2   3   6  14  15  20  25  27  30,0.01089     0.29284     0.16338   0.0045554    0.057591     0.31182     0.12274    0.034521   0.0077248      0.0626    0.023361     0.01022    0.048634      0.1994     0.54227    0.031357     0.12359    0.059258    0.039643     0.19405    0.047487    0.067639    0.023372    0.043036     0.92143    0.038022     0.41642    0.069734    0.067897     0.60783,0.13,0.3,0.952672901210046,0.65689355134964
+TD08_Mon4_all,32,"0.2,100,60,250",643.24,53,"[
+  {
+    ""type"": ""boundary"",
+    ""latency"": 867.5,
+    ""duration"": 179
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 1116.5,
+    ""duration"": 614
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 3711.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 8151.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 8276.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 11357.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 11358.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13147.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13210.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13273.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13331.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13394.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13457.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13520.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13578.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13641.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13704.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13767.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13825.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13888.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 13951.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14014.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14072.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14135.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14198.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14199.5,
+    ""duration"": 242
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14262.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14325.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14388.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14451.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14514.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14577.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14640.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14703.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14766.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14829.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14892.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 14955.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15018.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15081.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15144.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15207.5,
+    ""duration"": 179
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15270.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15333.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15396.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15459.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 15522.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 16019.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 16511.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 21695.5,
+    ""duration"": 118
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 24967.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 24968.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 25093.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 25156.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 25157.5,
+    ""duration"": 14431
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 29354.5,
+    ""duration"": 433
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 36388.5,
+    ""duration"": 180
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 36513.5,
+    ""duration"": 681
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 36514.5,
+    ""duration"": 366
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 37998.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 43486.5,
+    ""duration"": 309
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 43487.5,
+    ""duration"": 304
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 49720.5,
+    ""duration"": 371
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 51757.5,
+    ""duration"": 242
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 51944.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 56632.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 84206.5,
+    ""duration"": 371
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 84822.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 88212.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 100057.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 119425.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 122883.5,
+    ""duration"": 247
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 123990.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 126089.5,
+    ""duration"": 123
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 126338.5,
+    ""duration"": 185
+  },
+  {
+    ""type"": ""boundary"",
+    ""latency"": 128866.5,
+    ""duration"": 123
+  }
+]",520.880760893222,0.19022330561964,5,26,0.03125,Yes,AMICA,"{""lrate"":0.1,""maxiter"":2000,""num_models"":1,""num_mix_comps"":3,""numprocs"":8,""max_threads"":4}",iMARA,1   2   6  12  13  26,0.20669      0.4631  4.2804e-05     0.02984    0.043773    0.084432    0.010105  0.00014749    0.021257    0.015905    0.059581     0.12465     0.16641   0.0023522    0.011081    0.017777    0.025842    0.022712    0.063774     0.06762     0.05468    0.017828     0.03138    0.049105    0.024069     0.72223    0.025457    0.019321   0.0063305     0.02588,0.07,0.2,0.973089112360486,0.0821322798728943

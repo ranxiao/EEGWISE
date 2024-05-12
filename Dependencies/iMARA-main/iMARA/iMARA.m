@@ -96,8 +96,8 @@ i_tr=temp;
 
 
      g = find(info.posterior_artefactprob<art_threshold);
-%      if probability of comoponent being artefact is greater than 0.9 then
-%      the classfier marks as neural if less than 0.9 marks as artefact
+%      if probability of comoponent being artefact is smaller than 0.9 then
+%      the classfier marks as neural if more than 0.9 marks as artefact
 %      other studies may wish to change these cutoffs
                      
                 

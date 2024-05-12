@@ -729,7 +729,8 @@ elseif isstruct(dat)
     frames = dat.pnts * dat.trials;
     file = [dat.filepath filesep dat.datfile];
 else
-    if dat(1) == '.'
+
+    if dat(1) == '.' 
         dat = [pwd dat(2:end)];        
     end
     if strcmp(dat(end-3:end),'.set')
@@ -906,8 +907,12 @@ if RUN_LOCALLY == 1
 
 else % ----=============--------========---------======-------==========-===-=-====
 
-    system(['ssh `qconf -ss` -n ' MPI_BIN 'mpirun -np ' int2str(numprocs) ' -machinefile ' basepath 'machines ' ...
-        AMBIN ' ' outdir 'input.param']);
+    % There is a bug in running the algorithm with multiple processes, so
+    % opt to single process for now until later fixed
+%     system(['ssh `qconf -ss` -n ' MPI_BIN 'mpirun -np ' int2str(numprocs) ' -machinefile ' basepath 'machines ' ...
+%         AMBIN ' ' outdir 'input.param']);
+    system([AMBIN ' ' outdir 'input.param']);
+
     mods = loadmodout15(outdir);
     weights = mods.W(:,:,1);
     sphere = mods.S(1:mods.num_pcs,:);

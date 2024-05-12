@@ -20,8 +20,8 @@ if strcmp(app.GenerateReportSwitch.Value, 'Yes')
         Report_tb = load(strcat(ResultDir,'Analysis_Report.mat'));
         Report_tb = Report_tb.Report_tb;
     else
-        Report_tb = table('Size',[0 19],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Bad Segment Boundaries','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
-            'VariableTypes',{'string','double','string','double','double','string','double','double','double','string','string','string','string','string','string','double','double','double','double'});
+        Report_tb = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Bad Segment Boundaries','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
+            'VariableTypes',{'string','double','string','double','double','string','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
     end
 end
 if isempty(MyFolderInfo)
@@ -194,7 +194,14 @@ else
         ICA_method = app.ICADropDown.Value;
         switch ICA_method
             case 'RUNICA'
-                EEG = pop_runica_rx(EEG, 'icatype', 'runica', 'extended',1,'interrupt','on','pca',dataRank, 'lrate', app.LREditField.Value,'maxsteps',app.MaxStepsEditField.Value);
+%                 EEG = pop_runica_rx(EEG, 'icatype', 'runica', 'extended',1,'interrupt','on','pca',dataRank, 'lrate', app.LREditField.Value,'maxsteps',app.MaxStepsEditField.Value);
+                EEG = pop_runica_rx(EEG, 'icatype', 'runica', 'extended',1,'interrupt','on','pca',dataRank, 'lrate',app.RunicaSettings.lrate,'maxsteps',app.RunicaSettings.maxSteps);
+                
+            case 'AMICA'
+%                 EEG = pop_runamica(EEG, 'maxiter', 10, 'max_threads', 4);
+                EEG = pop_runamica(EEG, 'lrate',app.AmicaSettings.lrate , 'maxiter', app.AmicaSettings.maxiter,...
+                    'num_models', app.AmicaSettings.num_models, 'num_mix_comps', app.AmicaSettings.num_mix_comps, 'numprocs',app.AmicaSettings.numprocs,'max_threads', app.AmicaSettings.max_threads);
+
         end
 
         EEG = eeg_checkset( EEG );
@@ -214,42 +221,54 @@ else
                 % cutoffs", info.posterior_artefactprob is the probability of being
                 % neural component, so p_art = 1-info.posterior_artefactprob;
                 [artcomps,info] = iMARA(EEG);
-                p_art = 1-info.posterior_artefactprob;
+                p_art = info.posterior_artefactprob;
             case 'ICLabels'
                 % run automatic IC labeling
                 EEG = pop_iclabel(EEG, 'default');
-                p_art = 1-EEG.etc.ic_classification.ICLabel.classifications(:,1);
+                p_art = EEG.etc.ic_classification.ICLabel.classifications(:,1);
         end
+        
 
-        % ROC analysis by calculating IC rejection ratio (ICRR) and mean IC
-        % brain probability (mBCP)
         IC_Reject_Ratio = [];
         mean_P_brain = [];
-        for i_thres = min(p_art):0.001:max(p_art)%0:0.01:1
-            IC_Reject_Ratio = [IC_Reject_Ratio sum(p_art>=i_thres)/length(p_art)];
-            if isempty(p_art(p_art<i_thres))
-                mean_P_brain = [mean_P_brain 1];
-            else
-                mean_P_brain = [mean_P_brain mean(1-p_art(p_art<i_thres))];
+
+        if app.ProbThresholdforArtICEditField.Value ==0
+
+            % ROC analysis by calculating IC rejection ratio (ICRR) and mean IC
+            % brain probability (mBCP)
+            p_art_thre_range = 0:0.01:1;
+            for i_thres = 0:0.01:1%min(p_art):0.001:max(p_art)
+                IC_Reject_Ratio = [IC_Reject_Ratio sum(p_art>=i_thres)/length(p_art)];
+                if isempty(p_art(p_art<i_thres))
+                    mean_P_brain = [mean_P_brain 1]; % if all ICs are rejected, which is extreme case, then remaining IC is considered as 1
+                else
+                    mean_P_brain = [mean_P_brain mean(1-p_art(p_art<i_thres))];
+                end
             end
-        end
+    
+            % rescale both variables to find optimal P_art threshold and find optimal threshold
+            IC_Reject_Ratio_rs = normalize(IC_Reject_Ratio,'range');
+            mean_P_brain_rs = normalize(mean_P_brain,'range');
+            % caculate eclidean dist between points from each threshold and top
+            % left corner, shortest one corresponds to optimal operating point
+            edist = zeros(length(IC_Reject_Ratio_rs),1);
+            for i_thres = 1: length(IC_Reject_Ratio_rs)
+                edist(i_thres) = pdist([[IC_Reject_Ratio_rs(i_thres) mean_P_brain_rs(i_thres)];[0 1]],'euclidean');
+            end
+            [minDist,OPind]= min(edist);
+   
+            % set a floor for minimal artifact threshold should be based on the minimal mean_P_brain of 0.8, the
+            % smaller of the p_art threshold, the stricter algorithm
+            % select brain IC, and the better signal quality of remaining
+            % brain ICs
+            if mean_P_brain(OPind)<0.8
+                ind_temp = find(mean_P_brain>=0.8);
+                OPind = ind_temp(end);                
+            end
 
-        % rescale both variables to find optimal P_art threshold and find optimal threshold
-        IC_Reject_Ratio_rs = normalize(IC_Reject_Ratio,'range');
-        mean_P_brain_rs = normalize(mean_P_brain,'range');
-        % caculate eclidean dist between points from each threshold and top
-        % left corner, shortest one corresponds to optimal operating point
-        edist = zeros(length(IC_Reject_Ratio_rs),1);
-        for i_thres = 1: length(IC_Reject_Ratio_rs)
-            edist(i_thres) = pdist([[IC_Reject_Ratio_rs(i_thres) mean_P_brain_rs(i_thres)];[0 1]],'euclidean');
-        end
-        [p_thres,OPind]= min(edist);
-        %         [val,YJind]= max(mean_P_brain_rs+1-IC_Reject_Ratio_rs);
-
-        % set a floor for minimal artifact threshold should be
-        if p_thres<0.5
-            p_thres = 0.5;
-            OPind = 51;
+            p_thres= p_art_thre_range(OPind);
+        else
+            p_thres = app.ProbThresholdforArtICEditField.Value;
         end
 
         % bad IC criteria: non-brain pattern with probability over p_thres
@@ -314,6 +333,8 @@ else
 
         % update report
         if strcmp(app.GenerateReportSwitch.Value, 'Yes')
+            Report_tb.("ICA Algorithm"){i_file} = ICA_method;
+            Report_tb.("ICA Parameters"){i_file} = jsonencode(app.CurrentICASettings);            
             Report_tb.("ICA Labeling"){i_file} =  app.DropDown.Value;
             Report_tb.("Artifact IC"){i_file} =  num2str(BadIC);
             Report_tb.("Prob_artficat"){i_file} =  num2str(p_art);
