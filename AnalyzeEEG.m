@@ -66,7 +66,7 @@ else
         end
 
         %% Step 2. Bad EEG segment rejection
-        EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion','off','ChannelCriterion','off','LineNoiseCriterion','off','Highpass','off','BurstCriterion',app.ThresholdEditField_2.Value,'WindowCriterion','off','BurstRejection','on','Distance','Euclidian');
+        EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion','off','ChannelCriterion','off','LineNoiseCriterion','off','Highpass','off','BurstCriterion',num2str(app.ThresholdEditField_3.Value),'WindowCriterion','off','BurstRejection','on','Distance','Euclidian');
         eeglab redraw;
         BadSeg_bound = EEG.event;
         BadSeg_bound_dur = sum([BadSeg_bound.duration;])/EEG.srate;
@@ -114,7 +114,7 @@ else
 
         % update report
         if strcmp(app.GenerateReportSwitch.Value, 'Yes')
-            Report_tb.("ASR thres")(i_file) =  (app.ThresholdEditField_2.Value);
+            Report_tb.("ASR thres")(i_file) =  (app.ThresholdEditField_3.Value);
             Report_tb.("Bad Segment Boundaries"){i_file} =  jsonencode(BadSeg_bound, "PrettyPrint", true);
             Report_tb.("Remaining Duration")(i_file) =  (EEG.xmax);
             Report_tb.("Perc_rej_dur")(i_file) =  (Report_tb.("Original Duration")(i_file)-Report_tb.("Remaining Duration")(i_file))/Report_tb.("Original Duration")(i_file);
@@ -298,7 +298,7 @@ else
         close all;
 
         % plot IC topography and save figure and data before ICA
-        pop_topoplot(EEG, 0, [1:dataRank]);
+        pop_topoplot(EEG, 0, [1:size(EEG.icaweights,1)]);
         saveas(gcf,strcat(ResultDir,[FileName(1:end-4) '_Step4_ICATopo.jpg']));
         close all;
 

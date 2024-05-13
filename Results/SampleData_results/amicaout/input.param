@@ -1,5 +1,5 @@
-files C:\Users\rxiao27\Documents\MATLAB\infantMotor\EEGWISE\Results\SampleData_results\TD08_Mon4_all_Step3.fdt
-outdir C:\Users\rxiao27\Documents\MATLAB\infantMotor\EEGWISE\Results\SampleData_results\amicaout\
+files C:\Users\rxiao27\Documents\GitHub\EEGWISE\Results\SampleData_results\TD08_Mon4_Baseline_Step3.fdt
+outdir C:\Users\rxiao27\Documents\GitHub\EEGWISE\Results\SampleData_results\amicaout\
 block_size 128
 do_opt_block 0
 blk_min 256
@@ -16,7 +16,7 @@ pdftype 0
 max_iter 10
 num_samples 1
 data_dim 32
-field_dim 130221
+field_dim 11855
 field_blocksize 1
 do_history 0
 histstep 10
