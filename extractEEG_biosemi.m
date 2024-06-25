@@ -15,6 +15,7 @@ if strcmp(trial_type, 'all')
 else
     trial_idx = find(contains(Sess_trialType,trial_type,'IgnoreCase',true));
 end
+disp(trial_idx);
 
 if ~isempty(trial_idx)
 
