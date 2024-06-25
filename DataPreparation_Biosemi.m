@@ -26,27 +26,31 @@ else
     Sess_trialIdx = cellfun(@(x) str2double(regexp(x, '\d+', 'match', 'once')),{SessionDir.name},'UniformOutput',false);
     Sess_trialIdx = cell2mat(Sess_trialIdx);
 
+    % reorder session files in the file directory, in some systems trial10 might rank higher than trial 2, 3, etc. 
+    [~,ind_asc] = sort(Sess_trialIdx);
+    SessionDir_asc = SessionDir(ind_asc);
+
     % find rows in trialInfo that match the patient and visit
     ind = find(strcmp(trialInfo.ParticipantID,Pat) & (trialInfo.Month==str2num(Visit(end))));
     % get the trial info for the patient and visit
     Sess_trialInfo = trialInfo(ind,[4 5]);
+    [~,ind_asc2] = sort(Sess_trialInfo.Activity);% making sure Sess_trialInfo from excel file is ordered in ascending order
+    Sess_trialInfo = Sess_trialInfo(ind_asc2,:);
 
     % get trial types for trialInd that match trialType.Activity, 
-    % order of files from the directory might be different from the excel file.
-    [~,idx] = ismember(Sess_trialIdx,Sess_trialInfo.Activity);
-    Sess_trialType = Sess_trialInfo.TrialType(idx);
+    Sess_trialType = Sess_trialInfo.TrialType(ismember(Sess_trialIdx,Sess_trialInfo.Activity));
 
     trial_type = 'Baseline';
-    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 
     trial_type = 'reach';
-    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 
     trial_type = 'SATCO';
-    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 
     trial_type = 'all';
-    extractEEG_biosemi(SessionDir,Sess_trialType,trial_type);
+    extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 end
 
 close all;
