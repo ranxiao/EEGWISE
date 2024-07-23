@@ -12,14 +12,17 @@ function extractEEG_biosemi(SessionDir, Sess_trialType,trial_type)
 
 if strcmp(trial_type, 'all')
     trial_idx = 1:length(SessionDir);
+elseif strcmp(trial_type, 'Baseline & reach')
+    trial_idx = find(contains(Sess_trialType,{'Baseline','reach'},'IgnoreCase',true));
 else
     trial_idx = find(contains(Sess_trialType,trial_type,'IgnoreCase',true));
 end
-disp(trial_idx);
+% disp(trial_idx);
 
 if ~isempty(trial_idx)
-
+    
     EEG_raw = [];
+    timing_info = table();
     for i = 1:length(trial_idx)
 
         % Construct full path to the data file
@@ -37,6 +40,40 @@ if ~isempty(trial_idx)
             EEGdata(:, indNaN) = [];
         end
         EEG_raw = [EEG_raw EEGdata];
+
+        %construction original time table for later reference
+        timing_info.type{i} = Sess_trialType{trial_idx(i)};
+        timing_info.fid(i) = trial_idx(i);% the index of files
+        
+        % Open the file
+        fileID = fopen(FilePath, 'r');
+        % Read the file contents
+        fileContents = fread(fileID, '*char')';
+        fclose(fileID);
+        
+        % Define the regular expression pattern to match the date and time stamp
+        patternDate = '\d{1,2}-\d{1,2}-\d{4}'; % Pattern for date in the format 'D-M-YYYY' or 'DD-MM-YYYY'
+        patternTime = '\d{2}:\d{2}:\d{2}:\d{3}'; % Pattern for time in the format 'HH:MM:SS:FFF'
+        
+        % Extract the date and time using the defined patterns
+        dateMatch = regexp(fileContents, patternDate, 'match');
+        timeMatch = regexp(fileContents, patternTime, 'match');
+        
+        % Combine the date and time into a single datetime string
+        datetimeString = sprintf('%s %s', dateMatch{1}, timeMatch{1});
+        
+        % Convert the datetime string to a MATLAB datetime object
+        dateTime = datetime(datetimeString, 'InputFormat', 'd-M-yyyy HH:mm:ss:SSS');
+
+        timing_info.startDT(i) = dateTime;
+        if i == 1
+            timing_info.sid_start(i) = 1;% the starting index of samples
+            timing_info.sid_end(i) = size(EEGdata,2);% the starting index of samples
+        else
+            timing_info.sid_start(i) = timing_info.sid_end(i-1)+1;% the starting index of samples
+            timing_info.sid_end(i) = timing_info.sid_end(i-1)+size(EEGdata,2);% the starting index of samples
+        end
+
     end
 
     % Load necessary libraries or toolboxes
@@ -63,5 +100,8 @@ if ~isempty(trial_idx)
 
     % save data into EEGLab .set format
     EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',SessionDir(trial_idx(i)).folder);
+    % save the timing info, including the original trial type, trial id,
+    % and the sample start and end sample index for each trial (2048 hz)
+    save(fullfile('C:\Users\rxiao27\Documents\GitHub\EEGWISE\SampleData\TD40\Mon5',[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
 end
 end

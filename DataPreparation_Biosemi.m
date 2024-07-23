@@ -46,6 +46,10 @@ else
     trial_type = 'reach';
     extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 
+    trial_type = 'Baseline & reach';
+    extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
+
+
     trial_type = 'SATCO';
     extractEEG_biosemi(SessionDir_asc,Sess_trialType,trial_type);
 
