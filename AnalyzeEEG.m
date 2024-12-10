@@ -333,7 +333,7 @@ else
             % pop_selectcomps(EEG, [1:dataRank] );
             % 2. Save ICA results and EEG data before rejection for later reference
             EEG = eeg_checkset( EEG );
-            EEG = pop_saveset( EEG, 'filename',[FileName '_Step4_BeforeICARej.set'],'filepath',ResultDir);
+            EEG = pop_saveset( EEG, 'filename',[FileName(1:end-4) '_Step4_BeforeICARej.set'],'filepath',ResultDir);
     
             % hybrid mode with visual artifactual IC selection
             if app.AutomaticVisualButton_3.Value==1
@@ -356,7 +356,7 @@ else
     
             % Save EEG data after bad IC rejection
             EEG = eeg_checkset( EEG );
-            EEG = pop_saveset( EEG, 'filename',[FileName '_Step4_AfterICARej.set'],'filepath',ResultDir);
+            EEG = pop_saveset( EEG, 'filename',[FileName(1:end-4) '_Step4_AfterICARej.set'],'filepath',ResultDir);
             EEG = eeg_checkset( EEG );
     
             % update report
