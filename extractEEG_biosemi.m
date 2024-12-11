@@ -91,9 +91,11 @@ if ~isempty(trial_idx)
     EEG = pop_reref(EEG, [7, 24], 'keepref', 'on');
     EEG = eeg_checkset(EEG);
     
-    % Define the regular expression for extracting patterns like TD08 or Mon4
-    pattern = 'TD\d+|Mon\d+';
-    
+    % Define the regular expression for extracting patterns like TD08 or
+    % Mon4 or month 4 or month4
+    %pattern = 'TD\d+|Mon\d+';
+    pattern = 'TD\d+|Mon\d+|month ?\d+';
+
     % Use regexp to find matches to get the participant name and session
     % month
     matches = regexp(SessionDir(trial_idx(i)).folder, pattern, 'match');
@@ -102,6 +104,6 @@ if ~isempty(trial_idx)
     EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',SessionDir(trial_idx(i)).folder);
     % save the timing info, including the original trial type, trial id,
     % and the sample start and end sample index for each trial (2048 hz)
-    save(fullfile('C:\Users\rxiao27\Documents\GitHub\EEGWISE\SampleData\TD40\Mon5',[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
+    save(fullfile(SessionDir(trial_idx(i)).folder,[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
 end
 end

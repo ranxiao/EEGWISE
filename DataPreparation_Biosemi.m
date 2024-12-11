@@ -8,11 +8,11 @@
 addpath(genpath('./Dependencies/'));
 
 % this is where is data are on your computer
-DataDir = './SampleData/';
+DataDir = 'C:/Users/rxiao27/OneDrive - Emory/DataBackup/NeuroDevelopment/Reach_R01/';
 trialInfo = readtable(strcat(DataDir,'TrialNote_EEGreachingStudy.xlsx'));
 
 % modify the participant and visit session for analysis
-Pat = 'TD40'; Visit = 'Mon5';
+Pat = 'TD51'; Visit = 'Month 5';
 
 % get all data files of the participants and process one by one
 SessionDir = dir(strcat(DataDir,Pat,'/',Visit,'/*.txt'));
