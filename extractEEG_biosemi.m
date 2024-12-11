@@ -92,9 +92,9 @@ if ~isempty(trial_idx)
     EEG = eeg_checkset(EEG);
     
     % Define the regular expression for extracting patterns like TD08 or
-    % Mon4 or month 4 or month4
+    % Mon4 or month 4 or month4 or Month 4
     %pattern = 'TD\d+|Mon\d+';
-    pattern = 'TD\d+|Mon\d+|month ?\d+';
+    pattern = '(?i)TD\d+|Mon\d+|Month\s?\d+';
 
     % Use regexp to find matches to get the participant name and session
     % month
