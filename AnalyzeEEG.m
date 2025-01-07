@@ -20,10 +20,11 @@ if strcmp(app.GenerateReportSwitch.Value, 'Yes')
         Report_tb = load(strcat(ResultDir,'Analysis_Report.mat'));
         Report_tb = Report_tb.Report_tb;
     else
-        Report_tb = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Bad Segment Boundaries','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
-            'VariableTypes',{'string','double','string','double','double','string','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
+        Report_tb = table('Size',[0 20],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
+            'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
     end
 end
+
 if isempty(MyFolderInfo)
     disp('No files found. Please check the patient name and file directory.');
 else
@@ -34,7 +35,7 @@ else
     
             % check whether the file with same parameter has been analyzed and
             % exists in the report
-            tmp = Report_tb.("Prob_thres");tmp(tmp~=0.5)=0;
+            tmp = Report_tb.("Prob_thres");tmp(tmp~=0.5)=0; % handle prob_threshold which uses 0 to indicate using automatic threshold selection
             
             if sum(strcmp(Report_tb.("File Name"),  FileName(1:end-4)) ...
                     &strcmp(Report_tb.Filter_Lo_Hi_Notch_SampRate, strcat(num2str(app.LowcutofffreqHzEditField.Value),', ', num2str(app.HighcutofffreqHzEditField.Value), ', ', num2str(app.NotchHzDropDown.Value), ', ', num2str(app.ResampingHzEditField.Value)))...
@@ -47,8 +48,8 @@ else
                     & tmp ==  app.ProbThresholdforArtICEditField.Value)>=1
                 continue;
             else
-                newrow = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Bad Segment Boundaries','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
-                'VariableTypes',{'string','double','string','double','double','string','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
+                newrow = table('Size',[0 20],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
+                'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
             end
     
             % load .set data
@@ -88,10 +89,21 @@ else
             end
     
             %% Step 2. Bad EEG segment rejection
+
+            % original time in the trial before segment rejection
+            trial_time_ori = EEG.times;
+            % perform automatic segment rejection based on ASR
             EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion','off','ChannelCriterion','off','LineNoiseCriterion','off','Highpass','off','BurstCriterion',num2str(app.ThresholdEditField_3.Value),'WindowCriterion','off','BurstRejection','on','Distance','Euclidian');
             eeglab redraw;
-            BadSeg_bound = EEG.event;
-            BadSeg_bound_dur = sum([BadSeg_bound.duration;])/EEG.srate;
+            
+            % sample_mask contains binary indicator of each point is
+            % rejected (0) or retained (1) in the original trial data
+            sample_mask = EEG.etc.clean_sample_mask;
+
+            % Find the latency of regions where sample_mask is zero, i.e.,
+            % the regions rejected
+            BadSeg_bound = reshape(find(diff([false ~sample_mask false])),2,[])';
+            BadSeg_bound(:,2) = BadSeg_bound(:,2) - 1;
     
             if app.AutomaticVisualButton_2.Value==1
                 pop_eegplot( EEG, 1, 1, 1);
@@ -107,21 +119,34 @@ else
                 catch
                     BadSeg_manu = [];
                 end
-    
+                
                 if ~isempty(BadSeg_manu)
-                    BadSeg_manu_cell = [];
-                    for i_manu = 1:size(BadSeg_manu,1)
-                        BadSeg_manu_cell= [BadSeg_manu_cell; {'Boundary_manual',BadSeg_manu(i_manu,1),BadSeg_manu(i_manu,2)-BadSeg_manu(i_manu,1)}];
-                        EEG.data(:,BadSeg_manu(i_manu,1):BadSeg_manu(i_manu,2)) = [];
+                    retained_indices = find(sample_mask);  % Indices of retained data points after automatic rejection
+
+                    % Convert manual indices to original indices
+                    BadSeg_manu_orig = retained_indices(BadSeg_manu);  % Map back to original indices
+
+                    % update the sample_mask with the manually rejected
+                    % segment for later recontruction of original trial
+                    % time
+                    for i_bs = 1:size(BadSeg_manu_orig, 1)
+                        % Set manually rejected points to zero (mark as rejected)
+                        sample_mask(BadSeg_manu_orig(i_bs, 1):BadSeg_manu_orig(i_bs, 2)) = false;
                     end
-                    BadSeg_manu_struct = cell2struct(BadSeg_manu_cell, fieldnames(BadSeg_bound)', 2)';
-                    BadSeg_bound = [BadSeg_bound BadSeg_manu_struct];
-                    BadSeg_bound_dur = sum([BadSeg_bound.duration;])/EEG.srate;
-    
-                    EEG = eeg_checkset( EEG );
-                    eeglab redraw;
-                end
+
+                    % Recalculate BadSeg_bound based on the updated sample mask (no merging needed)
+                    BadSeg_bound = reshape(find(diff([false ~sample_mask false])),2,[])';
+                    BadSeg_bound(:,2) = BadSeg_bound(:,2) - 1;           
+                end            
             end
+    
+
+            % Filter the original trial times using the updated mask
+            trial_time_afterRej = trial_time_ori(sample_mask);    
+            % save it to result folder, including sample_mask as reference to original trial, zero for
+            % reject, one for retain, BadSeg_bound as the starting and
+            % ending point for each bad segments
+            save(strcat(ResultDir,[FileName(1:end-4) '_seg_rej_ref.mat']),'trial_time_afterRej',"BadSeg_bound",'sample_mask','trial_time_ori')
     
             % plot EEG after the step
             pop_eegplot( EEG, 1, 1, 1);
@@ -137,10 +162,8 @@ else
             % update report
             if strcmp(app.GenerateReportSwitch.Value, 'Yes')
                 newrow.("ASR thres")(1) =  (app.ThresholdEditField_3.Value);
-                newrow.("Bad Segment Boundaries"){1} =  jsonencode(BadSeg_bound, "PrettyPrint", true);
                 newrow.("Remaining Duration")(1) =  (EEG.xmax);
                 newrow.("Perc_rej_dur")(1) =  (newrow.("Original Duration")(1)-newrow.("Remaining Duration")(1))/newrow.("Original Duration")(1);
-    
             end
     
             %% Step 3. Bad channel rejection and interpolation
