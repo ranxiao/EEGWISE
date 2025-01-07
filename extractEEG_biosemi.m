@@ -101,9 +101,9 @@ if ~isempty(trial_idx)
     matches = regexp(SessionDir(trial_idx(i)).folder, pattern, 'match');
 
     % save data into EEGLab .set format
-    EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',SessionDir(trial_idx(i)).folder);
+    EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',fileparts(SessionDir(trial_idx(i)).folder));
     % save the timing info, including the original trial type, trial id,
     % and the sample start and end sample index for each trial (2048 hz)
-    save(fullfile(SessionDir(trial_idx(i)).folder,[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
+    save(fullfile(fileparts(SessionDir(trial_idx(i)).folder),[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
 end
 end

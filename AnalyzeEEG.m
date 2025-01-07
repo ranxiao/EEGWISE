@@ -5,7 +5,7 @@ function [] = AnalyzeEEG(app)
 addpath(genpath('./Dependencies/'));
 DataDir = app.DatadirectoryEditField.Value;
 dataFolderDir = strsplit(DataDir,filesep);
-ResultDir = [app.ResultdirectoryEditField.Value dataFolderDir{end-1} '_results/'];
+ResultDir = [app.ResultdirectoryEditField.Value dataFolderDir{end}(1:end-1) '_Results/'];
 
 if ~exist(ResultDir,'dir')
     mkdir(ResultDir);
