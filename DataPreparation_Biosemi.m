@@ -12,7 +12,7 @@ DataDir = 'C:/Users/rxiao27/OneDrive - Emory/DataBackup/Infant Development/Reach
 trialInfo = readtable(strcat(DataDir,'TrialNote_EEGreachingStudy.xlsx'));
 
 % modify the participant and visit session for analysis
-Pat = 'TD01';
+Pat = 'TD06';
 
 % List all files and folders in the directory
 PatDir = dir(fullfile(DataDir, Pat)); % Using fullfile for safer path handling

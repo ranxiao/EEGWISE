@@ -76,6 +76,11 @@ if ~isempty(trial_idx)
 
     end
 
+    if isempty(EEG_raw)
+        print("No valid EEG available");
+        return;
+    end
+
     % Load necessary libraries or toolboxes
     eeglab nogui; % Start EEGLAB if it's not already running
 
@@ -94,7 +99,7 @@ if ~isempty(trial_idx)
     % Define the regular expression for extracting patterns like TD08 or
     % Mon4 or month 4 or month4 or Month 4
     %pattern = 'TD\d+|Mon\d+';
-    pattern = '(?i)TD\d+|Mon\d+|Month\s?\d+';
+    pattern = '(?i)TD\d+|(?i)Mon\s?\d+|(?i)Month\s?\d+';
 
     % Use regexp to find matches to get the participant name and session
     % month
