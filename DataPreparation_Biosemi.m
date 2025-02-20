@@ -7,17 +7,19 @@
 %% Initialize directories
 addpath(genpath('./Dependencies/'));
 
-% this is where is data are on your computer
-DataDir = 'C:/Users/rxiao27/OneDrive - Emory/DataBackup/Infant Development/Reach_R01/';
-trialInfo = readtable(strcat(DataDir,'TrialNote_EEGreachingStudy.xlsx'));
+% Modify to the data directory on your computer
+DataDir = 'C:/Users/rxiao27/OneDrive - Emory/DataBackup/Infant Development/Reach_R01_EEG/';
+% Modify to the directory for the trial information on your computer
+trialInfo = readtable('C:/Users/rxiao27/OneDrive - Emory/DataBackup/Infant Development/Reach_R01_meta/TrialNote_EEGreachingStudy.xlsx');
 
 % modify the participant and visit session for analysis
-Pat = 'TD06';
+Pat = 'TD68';
 
 % List all files and folders in the directory
 PatDir = dir(fullfile(DataDir, Pat)); % Using fullfile for safer path handling
-% Remove "." and ".." entries (ignore hidden folders)
-PatDir = PatDir(~ismember({PatDir.name}, {'.', '..'}));
+% Remove "." and ".." entries and keep only folders
+PatDir = PatDir([PatDir.isdir]); % Keep only directories
+PatDir = PatDir(~ismember({PatDir.name}, {'.', '..'})); % Remove "." and ".."
 
 if isempty(PatDir)
     print('No monthly folders found for the patient. Please check the patient name and file directory.');
@@ -33,10 +35,6 @@ else
             Sess_trialIdx = cellfun(@(x) str2double(regexp(x, '\d+', 'match', 'once')),{SessionDir.name},'UniformOutput',false);
             Sess_trialIdx = cell2mat(Sess_trialIdx);
         
-            % reorder session files in the file directory, in some systems trial10 might rank higher than trial 2, 3, etc. 
-            [~,ind_asc] = sort(Sess_trialIdx);
-            SessionDir_asc = SessionDir(ind_asc);
-        
             % find rows in trialInfo that match the patient and visit
             ind = find(strcmp(trialInfo.ParticipantID,Pat) & (trialInfo.Month==str2num(PatDir(i).name(end))));
             % get the trial info for the patient and visit
@@ -45,8 +43,18 @@ else
             Sess_trialInfo = Sess_trialInfo(ind_asc2,:);
         
             % get trial types for trialInd that match trialType.Activity, 
-            Sess_trialType = Sess_trialInfo.TrialType(ismember(Sess_trialIdx,Sess_trialInfo.Activity));
+            Sess_trialType = Sess_trialInfo.TrialType(ismember(Sess_trialInfo.Activity,Sess_trialIdx));
         
+            % for Sess trials that dont have labels, remove them from
+            % further analysis.
+            tmp = ismember(Sess_trialIdx,Sess_trialInfo.Activity);
+            Sess_trialIdx = Sess_trialIdx(tmp);
+            SessionDir = SessionDir(tmp);
+
+            % reorder session files in the file directory, in some systems trial10 might rank higher than trial 2, 3, etc. 
+            [~,ind_asc] = sort(Sess_trialIdx);
+            SessionDir_asc = SessionDir(ind_asc);
+
             % uncomment trial type of interest
         
         %     trial_type = 'Baseline';

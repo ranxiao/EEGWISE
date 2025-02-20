@@ -20,17 +20,17 @@ if strcmp(app.GenerateReportSwitch.Value, 'Yes')
         Report_tb = load(strcat(ResultDir,'Analysis_Report.mat'));
         Report_tb = Report_tb.Report_tb;
     else
-        Report_tb = table('Size',[0 20],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
-            'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
+        Report_tb = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance','Error Message'},...
+            'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double','string'});
     end
 end
 
 if isempty(MyFolderInfo)
     disp('No files found. Please check the patient name and file directory.');
 else
-    try
+%     try
         for i_file = 1:size(MyFolderInfo,1)
-            
+            try
             FileName = MyFolderInfo(i_file).name;
     
             % check whether the file with same parameter has been analyzed and
@@ -48,8 +48,8 @@ else
                     & tmp ==  app.ProbThresholdforArtICEditField.Value)>=1
                 continue;
             else
-                newrow = table('Size',[0 20],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance'},...
-                'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double'});
+                newrow = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance','Error Message'},...
+                'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double','string'});
             end
     
             % load .set data
@@ -440,6 +440,14 @@ else
     
             close all; clc;
             clear ALLCOM ALLEEG EEGdata EEG;
+        catch ME
+            newrow = table('Size',[0 21],'VariableNames', {'File Name','NoChannel','Filter_Lo_Hi_Notch_SampRate', 'Original Duration','ASR thres','Remaining Duration','Perc_rej_dur','Kurtosis thres','Bad Channels','Perc_rej_ch','CAR','ICA Algorithm','ICA Parameters','ICA Labeling','Artifact IC','Prob_artficat','Prob_thres','IC Rejection Ratio','mean Brain IC prob','Residual Variance','Error Message'},...
+                'VariableTypes',{'string','double','string','double','double','double','double','double','string','string','string','string','string','string','string','string','double','double','double','double','string'});
+            newrow.("File Name"){1} =  FileName(1:end-4);
+                newrow.("Error Message"){1} =ME.message;
+                 Report_tb = [Report_tb; newrow];
+                continue;
+        end
         end
         % save analysis report
         if strcmp(app.GenerateReportSwitch.Value, 'Yes')
@@ -447,13 +455,13 @@ else
         end
         disp('Calculation completed!')
 
-    catch
-        % save analysis report
-        if strcmp(app.GenerateReportSwitch.Value, 'Yes')
-            writetable(Report_tb,strcat(ResultDir,'Analysis_Report.csv'));
-        end
-        disp(sprintf('Error occurred when processing file: %s',FileName));
-    end
+%     catch
+%         % save analysis report
+%         if strcmp(app.GenerateReportSwitch.Value, 'Yes')
+%             writetable(Report_tb,strcat(ResultDir,'Analysis_Report.csv'));
+%         end
+%         disp(sprintf('Error occurred when processing file: %s',FileName));
+%     end
 end
 
 

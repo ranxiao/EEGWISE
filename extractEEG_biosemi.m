@@ -30,9 +30,12 @@ if ~isempty(trial_idx)
 
         % Read the table data from the file
         data = readtable(FilePath);
-
-        % Select 32 channel EEG data, assuming a sample rate (srate) of 2048
-        EEGdata = table2array(data(:, 2:33))';
+        try 
+            % Select 32 channel EEG data, assuming a sample rate (srate) of 2048
+            EEGdata = table2array(data(:, 2:33))';
+        catch
+            continue;
+        end
 
         % Remove timepoints at the end of data showing all NaNs
         indNaN = find(isnan(sum(EEGdata, 1)));
@@ -70,14 +73,14 @@ if ~isempty(trial_idx)
             timing_info.sid_start(i) = 1;% the starting index of samples
             timing_info.sid_end(i) = size(EEGdata,2);% the starting index of samples
         else
-            timing_info.sid_start(i) = timing_info.sid_end(i-1)+1;% the starting index of samples
-            timing_info.sid_end(i) = timing_info.sid_end(i-1)+size(EEGdata,2);% the starting index of samples
+            timing_info.sid_start(i) = max(timing_info.sid_end(1:i-1))+1;% the starting index of samples
+            timing_info.sid_end(i) = max(timing_info.sid_end(1:i-1))+size(EEGdata,2);% the starting index of samples
         end
 
     end
 
     if isempty(EEG_raw)
-        print("No valid EEG available");
+        disp("No valid EEG available");
         return;
     end
 
