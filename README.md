@@ -1,5 +1,6 @@
 # EEGWISE
-Major updates - Ran Xiao, 5.12.2024 
+Optional manual uploaded. 6/2025. 
+Major updates - Ran Xiao, 5/12/2024 
 1. a bug is fixed for the optimal threshold of probability of artifactual IC. 
 2. added option for the user to set their own probability threshold rather than the proposed cutoff
 3. added AMICA as an alternative ICA algorithm
