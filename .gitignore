@@ -3,3 +3,6 @@
 /Results
 /SampleData
 /Results
+Misc/DataPreparation_Biosemi_RP.m
+Misc/extractEEG_biosemi_RP.m
+Misc/PerformanceComparison.m

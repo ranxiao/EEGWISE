@@ -1,4 +1,4 @@
-function extractEEG_biosemi(SessionDir, Sess_trialType,trial_type)
+function extractEEG_biosemi_batchAllPat(SessionDir,ResultDir, Sess_trialType,trial_type)
 % stitch EEG of specifified trial_types, convert to EEGLAB .set file,
 % and save to file directory
 % Input, SessionDir icnluding file directories
@@ -8,7 +8,8 @@ function extractEEG_biosemi(SessionDir, Sess_trialType,trial_type)
 % Output: EEGLAB .set structure with trials of the specific types
 % stitched together
 % Ran Xiao, Emory University, 2/2024
-% rev. 05.2024, added SATCO condition.
+% rev. 05/2024, added SATCO condition.
+% rev. 06/2025, fix date issue, and customize ResultDir. 
 
 if strcmp(trial_type, 'all')
     trial_idx = 1:length(SessionDir);
@@ -63,7 +64,9 @@ if ~isempty(trial_idx)
         timeMatch = regexp(fileContents, patternTime, 'match');
         
         % Combine the date and time into a single datetime string
-        datetimeString = sprintf('%s %s', dateMatch{1}, timeMatch{1});
+        % first data is "evaluation date", and the second date is the right
+        % one, which is the collectiond date.
+        datetimeString = sprintf('%s %s', dateMatch{2}, timeMatch{1});
         
         % Convert the datetime string to a MATLAB datetime object
         dateTime = datetime(datetimeString, 'InputFormat', 'd-M-yyyy HH:mm:ss:SSS');
@@ -109,9 +112,9 @@ if ~isempty(trial_idx)
     matches = regexp(SessionDir(trial_idx(i)).folder, pattern, 'match');
 
     % save data into EEGLab .set format
-    EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',fileparts(SessionDir(trial_idx(i)).folder));
+    EEG = pop_saveset( EEG, 'filename',[matches{1},'_', matches{2},'_', trial_type, '.set'],'filepath',ResultDir);
     % save the timing info, including the original trial type, trial id,
     % and the sample start and end sample index for each trial (2048 hz)
-    save(fullfile(fileparts(SessionDir(trial_idx(i)).folder),[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
+    save(fullfile(ResultDir,[matches{1},'_', matches{2},'_', trial_type, '_ori_timing_info.mat']),'timing_info');
 end
 end
