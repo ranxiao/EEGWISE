@@ -1,7 +1,7 @@
 # EEGWISE
-fixed a bug using string as ASR threshold, default set to 20 7/11/2025
-Operational manual has been uploaded. 6/2025. 
-Major updates - Ran Xiao, 5/12/2024 
+ 7/11/2025 - fixed a bug using string as ASR threshold, default set to 20.  
+6/2025 - Operational manual has been uploaded.  
+5/12/2024 - Major updates:     
 1. a bug is fixed for the optimal threshold of probability of artifactual IC. 
 2. added option for the user to set their own probability threshold rather than the proposed cutoff
 3. added AMICA as an alternative ICA algorithm
