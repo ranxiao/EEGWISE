@@ -93,7 +93,7 @@ else
             % original time in the trial before segment rejection
             trial_time_ori = EEG.times;
             % perform automatic segment rejection based on ASR
-            EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion','off','ChannelCriterion','off','LineNoiseCriterion','off','Highpass','off','BurstCriterion',num2str(app.ThresholdEditField_3.Value),'WindowCriterion','off','BurstRejection','on','Distance','Euclidian');
+            EEG = pop_clean_rawdata(EEG, 'FlatlineCriterion','off','ChannelCriterion','off','LineNoiseCriterion','off','Highpass','off','BurstCriterion',app.ThresholdEditField_3.Value,'WindowCriterion','off','BurstRejection','on','Distance','Euclidian');
             eeglab redraw;
             
             % sample_mask contains binary indicator of each point is
